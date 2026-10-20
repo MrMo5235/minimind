@@ -1,0 +1,123 @@
+{
+    // 所有配置都直接使用 minimind 环境，无需先在终端 conda activate。
+    // 修改参数后先保存，再从“运行和调试”选择配置。
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "01 预训练试跑（128条，先运行这个）",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "C:/Anaconda/envs/minimind/python.exe",
+            "program": "${workspaceFolder}/trainer/train_pretrain.py",
+            "cwd": "${workspaceFolder}/trainer",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": { "PYTHONUTF8": "1" },
+            "args": [
+                // 数据及输出；试跑权重与完整训练分开保存。
+                "--data_path", "../dataset/pretrain_smoke.jsonl",
+                "--save_dir", "../out/smoke",
+                "--save_weight", "pretrain_smoke",
+                // Dense 模型结构：预训练与后续 SFT 必须保持一致。
+                "--hidden_size", "768",
+                "--num_hidden_layers", "8",
+                "--use_moe", "0",
+                // 128 条 / 每批 2 条 = 64 步，每步更新一次参数。
+                "--epochs", "1",
+                "--batch_size", "2",
+                "--accumulation_steps", "1",
+                "--max_seq_len", "340",
+                "--learning_rate", "0.0005",
+                "--grad_clip", "1.0",
+                // 本机 RTX 4060 已确认 CUDA 和 BF16 可用。
+                "--device", "cuda:0",
+                "--dtype", "bfloat16",
+                "--num_workers", "0",
+                "--use_compile", "0",
+                // none：随机初始化；from_resume=0：重新开始。
+                "--from_weight", "none",
+                "--from_resume", "0",
+                "--seed", "42",
+                "--log_interval", "1",
+                "--save_interval", "64",
+                "--wandb_project", "MiniMind-Pretrain-Smoke"
+                // 如需云端实验跟踪，在上一行后加逗号，再添加 "--use_wandb"。
+                // 当前原项目此开关实际导入 swanlab，默认不启用。
+            ]
+        },
+        {
+            "name": "02 完整预训练（候选参数，试跑后再用）",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "C:/Anaconda/envs/minimind/python.exe",
+            "program": "${workspaceFolder}/trainer/train_pretrain.py",
+            "cwd": "${workspaceFolder}/trainer",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": { "PYTHONUTF8": "1" },
+            "args": [
+                "--data_path", "../dataset/pretrain_t2t_mini.jsonl",
+                "--save_dir", "../out",
+                "--save_weight", "pretrain",
+                "--hidden_size", "768",
+                "--num_hidden_layers", "8",
+                "--use_moe", "0",
+                "--epochs", "2",
+                // 单卡有效批大小 = 4 × 64 = 256，显存和耗时仍需实测。
+                "--batch_size", "4",
+                "--accumulation_steps", "64",
+                "--max_seq_len", "340",
+                "--learning_rate", "0.0005",
+                "--grad_clip", "1.0",
+                "--device", "cuda:0",
+                "--dtype", "bfloat16",
+                "--num_workers", "0",
+                "--use_compile", "0",
+                "--from_weight", "none",
+                "--from_resume", "0",
+                "--seed", "42",
+                "--log_interval", "100",
+                // 按完整的梯度累积周期保存，便于后续断点恢复。
+                "--save_interval", "1024",
+                "--wandb_project", "MiniMind-Pretrain"
+            ]
+        },
+        {
+            "name": "03 完整 SFT（需要自己的预训练权重）",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "C:/Anaconda/envs/minimind/python.exe",
+            "program": "${workspaceFolder}/trainer/train_full_sft.py",
+            "cwd": "${workspaceFolder}/trainer",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": { "PYTHONUTF8": "1" },
+            "args": [
+                "--data_path", "../dataset/sft_t2t_mini.jsonl",
+                "--save_dir", "../out",
+                "--save_weight", "full_sft",
+                "--hidden_size", "768",
+                "--num_hidden_layers", "8",
+                "--use_moe", "0",
+                "--epochs", "2",
+                // 单卡有效批大小 = 2 × 8 = 16；SFT 也应先做小规模验证。
+                "--batch_size", "2",
+                "--accumulation_steps", "8",
+                "--max_seq_len", "768",
+                "--learning_rate", "0.00001",
+                "--grad_clip", "1.0",
+                "--device", "cuda:0",
+                "--dtype", "bfloat16",
+                "--num_workers", "0",
+                "--use_compile", "0",
+                // 当前原脚本从 ../out/pretrain_768.pth 读取初始权重。
+                "--from_weight", "pretrain",
+                "--from_resume", "0",
+                "--seed", "42",
+                "--log_interval", "100",
+                "--save_interval", "1000",
+                "--wandb_project", "MiniMind-Full-SFT"
+            ]
+        }
+    ]
+}

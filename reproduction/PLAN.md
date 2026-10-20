@@ -11,9 +11,10 @@
 - 原项目：https://github.com/jingyaogong/minimind
 - 固定起点：见 [UPSTREAM.md](UPSTREAM.md)。
 - 用户提供的显卡：NVIDIA GeForce RTX 4060，8188 MiB 显存。
-- 当前工作环境：Windows / PowerShell。
-- 尚未验证：系统内存、磁盘空间、显卡驱动、Python、PyTorch、CUDA 可用性及训练吞吐量。
-- 当前阶段：仓库与计划记录；尚未安装训练依赖、下载数据或启动训练。
+- 当前工作环境：Windows / VS Code，Conda 环境 `C:/Anaconda/envs/minimind`。
+- 2026-10-20 已确认：PyTorch `2.6.0+cu124`、CUDA 可用、RTX 4060 Laptop GPU 支持 BF16，微小 GPU 矩阵运算成功，`pip check` 无依赖冲突。
+- 两份 mini 数据已下载至 `dataset/`，各前 128 条格式及必要字段通过检查；完整数据校验、划分和统计尚未完成。
+- 当前阶段：准备首次训练试跑；VS Code 参数配置及说明见 [VSCODE.md](VSCODE.md)。尚未实际训练，环境阶段的模型前向、反向及更新验收仍待完成，训练显存和吞吐量尚未实测。
 
 先完成 Dense 主线，之后按需求逐项增加 LoRA、DPO 或 MoE 实验。
 
@@ -91,4 +92,4 @@ GitHub 日常提交保存代码、配置、文档、曲线、汇总指标和精�
 
 ## 下一步
 
-完成阶段 00 的提交与远端核对后，检查本机 Python、驱动、GPU、内存与磁盘，建立独立训练环境。
+在 VS Code 的“运行和调试”中选择 `01 预训练试跑（128条，先运行这个）`，验证模型计算、参数更新和权重保存。通过后记录日志，再继续数据校验及训练性能测试；完整训练配置当前仍为候选值。

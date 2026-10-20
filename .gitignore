@@ -4,3 +4,7 @@ __pycache__/
 out
 website/
 docs-minimind/
+
+# 本地训练数据、模型产物与断点；保留数据加载源码和说明。
+/dataset/*.jsonl
+/checkpoints/
