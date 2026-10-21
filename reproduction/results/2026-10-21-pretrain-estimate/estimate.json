@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-21",
+  "method": "正在运行的正式预训练，从进程创建到最新已保存检查点的平均速度，包含初始化和保存开销",
+  "rows_counted_by_nonempty_lines": 1270238,
+  "blank_lines": 0,
+  "data_sha256": "6dd6716c84ab36897bdbfc7f88e04f4441c48c1ab7ecee88ce0b0e7d4685560c",
+  "full_json_parsing_validated": false,
+  "batch_size": 4,
+  "accumulation_steps": 64,
+  "epochs": 2,
+  "max_seq_len": 340,
+  "dtype": "bfloat16",
+  "world_size": 1,
+  "process_started": "2026-10-21T21:20:40+08:00",
+  "checkpoint_saved": "2026-10-21T21:52:33.591217+08:00",
+  "checkpoint_epoch_zero_based": 0,
+  "checkpoint_step": 29696,
+  "micro_batches_per_epoch": 317560,
+  "micro_batches_total": 635120,
+  "completed_micro_batches_at_checkpoint": 29696,
+  "elapsed_seconds_at_checkpoint": 1913.5912170410156,
+  "average_seconds_per_micro_batch": 0.06443935941005575,
+  "estimated_total_hours": 11.368534985698505,
+  "estimated_remaining_hours_at_checkpoint": 10.836981869853776,
+  "caveats": [
+    "检查点后到当前时间的进度未计入；初始化耗时计入平均值。",
+    "估算假设未来平均速度相近，受功耗、温度、其他 GPU 任务和数据处理影响。",
+    "没有运行额外基准，没有修改训练权重，没有暂停或重启用户任务。",
+    "同一调试任务可能有 launcher 和训练子进程，不能把两个 PID 当作两份训练。"
+  ]
+}
