@@ -1,0 +1,10 @@
+{
+  "same_prompt_repeated_twice": true,
+  "before_token_ids_reproducible": true,
+  "after_token_ids_reproducible": true,
+  "interactive_prompt_and_exit": true,
+  "vscode_config_parsed": true,
+  "weight_sha256_matches_smoke_record": true,
+  "training_executed": false,
+  "sample_max_new_tokens": 16
+}

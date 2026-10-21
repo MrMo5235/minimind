@@ -118,6 +118,39 @@
                 "--save_interval", "1000",
                 "--wandb_project", "MiniMind-Full-SFT"
             ]
+        },
+        {
+            "name": "04 训练前后交互续写对比",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "C:/Anaconda/envs/minimind/python.exe",
+            "program": "${workspaceFolder}/scripts/compare_pretrain.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": { "PYTHONUTF8": "1" },
+            "args": [
+                // 以后完成正式预训练，可以改为 out/pretrain_768.pth。
+                "--weight", "out/smoke/pretrain_smoke_768.pth",
+                "--tokenizer", "model",
+                "--hidden_size", "768",
+                "--num_hidden_layers", "8",
+                "--use_moe", "0",
+                // 训练前模型按当前代码和相同 seed 重建，不是保存的原始快照。
+                "--init_seed", "42",
+                "--generation_seed", "42",
+                "--device", "cuda:0",
+                "--dtype", "bfloat16",
+                "--max_prompt_tokens", "256",
+                "--max_new_tokens", "64",
+                // greedy 为贪心生成，便于比较；sample 为固定种子的随机采样。
+                "--mode", "greedy",
+                "--temperature", "0.85",
+                "--top_p", "0.95",
+                "--top_k", "50",
+                "--repetition_penalty", "1.0",
+                "--prompts_file", "reproduction/prompts/pretrain_compare.json"
+            ]
         }
     ]
 }

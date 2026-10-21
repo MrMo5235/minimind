@@ -46,3 +46,10 @@ SFT 的 `from_weight=pretrain` 需要先有 `out/pretrain_768.pth`；试跑权�
 提交到 GitHub 的内容包括运行配置、说明和忽略规则。原始数据、试跑数据、`out/` 权重及 `checkpoints/` 断点不进入 Git。
 
 VS Code 官方说明：https://code.visualstudio.com/docs/python/debugging
+
+## 训练前后交互比较（2026-10-21 新增）
+
+“运行和调试”现在还有 **04 训练前后交互续写对比**，它启动 `scripts/compare_pretrain.py`，只运行推理。按 Ctrl+F5 后在终端输入文本，同一个提示会分别让 seed 重建的初始化基线和本次试跑权重续写。
+输入 `/examples` 运行固定示例，`/exit` 退出。用法、基线限制及记录位置见 [COMPARE_PRETRAIN.md](COMPARE_PRETRAIN.md)。
+
+编号 04 是启动配置编号，与 PLAN 中的训练性能测试阶段编号没有对应关系。
